@@ -4,9 +4,9 @@
 To perform a study on Socket Programming
 ## Introduction:
 
- 	Socket programming is a crucial aspect of network communication, allowing for data exchange between computers over a network. It forms the backbone of various networked applications, enabling communication between clients and servers. This study explores the fundamental concepts of socket programming, its use cases, and provides a practical example to demonstrate its implementation.
+ Socket programming is a crucial aspect of network communication, allowing for data exchange between computers over a network. It forms the backbone of various networked applications, enabling communication between clients and servers. This study explores the fundamental concepts of socket programming, its use cases, and provides a practical example to demonstrate its implementation.
 ## Understanding Socket Programming:
-	Socket programming involves the use of sockets, which serve as endpoints for communication. A socket is identified by an IP address and a port number, and it facilitates data transfer between a client and a server. The two main types of sockets are Stream Sockets, which provide a reliable, connection-oriented communication, and Datagram Sockets, which are connectionless and suitable for scenarios where reliability is less critical.
+ Socket programming involves the use of sockets, which serve as endpoints for communication. A socket is identified by an IP address and a port number, and it facilitates data transfer between a client and a server. The two main types of sockets are Stream Sockets, which provide a reliable, connection-oriented communication, and Datagram Sockets, which are connectionless and suitable for scenarios where reliability is less critical.
 ## Key Concepts in Socket Programming:
 1.Sockets
 •	A socket is a software representation of a communication endpoint in a network.
@@ -47,44 +47,56 @@ After establishing a connection, clients can send and receive data using send() 
 Socket programming finds applications in various domains, including web development, file transfer protocols, online gaming, and real-time communication. It is the foundation for protocols like HTTP, FTP, and SMTP, which power the internet. Socket programming enables the development of both server and client applications, facilitating the exchange of information between devices in a networked environment.
 ## Example Use Cases:
 
-1.	Web servers: Web servers use socket programming to handle incoming HTTP requests from clients, serving web pages and content.
-2.	Chat Application: Instant messaging and chat applications use sockets to enable real-time communication between users.
-3.	File Transfer Protocol: Protocols like FTP (File Transfer Protocol) utilize socket programming for transferring files between a client and a server.
-4.	Networked Games: Online multiplayer games rely on socket programming to facilitate communication between game clients and servers.
-5.	RPC mechanisms: which allow processes to execute code on a remote server, often use socket programming for communication.
+1.Time Synchronization Service:
+In distributed systems, synchronized time is crucial. This program can serve as a foundation for a basic time synchronization service, where a central server provides the current date and time to connected clients.
+2.Event Logging Systems:
+Centralized servers can provide a timestamp to client machines, ensuring that all logged events across systems have a consistent and accurate time reference.
+3.IoT Device Coordination:
+In IoT networks, devices may request the current time from a server after reboot or startup, using this information to schedule operations or log sensor data correctly.
+4.Automated Job Scheduling:
+Remote clients may request the current time to align with server-scheduled jobs or tasks, ensuring accurate execution timing in systems like grid computing or backups.
+5.Educational Purpose:
+The program is ideal for teaching the basics of socket programming, illustrating key concepts such as socket creation, binding, listening, accepting connections, sending and receiving data, and client-server interaction.
 
-## Program:
-## Server
+## Program :
 
+
+
+## server.py
+~~~
+import socket
+s = socket.socket()
+s.connect(('localhost', 8000))
+data = s.recv(1024).decode()
+print("Received from server:", data)
+s.send("Time received successfully.".encode())
+s.close()
+~~~
+
+ ## Client.py
+~~~
 import socket
 from datetime import datetime
-s=socket.socket()
-s.bind(('localhost',8000))
+s = socket.socket()
+s.bind(('localhost', 8000))
 s.listen(5)
-c,addr=s.accept()
-print("Client Address : ",addr)
-now = datetime.now()
-c.send(now.strftime("%d/%m/%Y %H:%M:%S").encode())
-ack=c.recv(1024).decode()
+print("Waiting for a client to connect...")
+c, addr = s.accept()
+print("Client Address:", addr)
+now = datetime.now()current_time = now.strftime("%d/%m/%Y %H:%M:%S")
+c.send(current_time.encode())
+ack = c.recv(1024).decode()
 if ack:
- print(ack)
+    print("Acknowledgment from client:", ack)
+
 c.close()
 
-## Client
+~~~
+## Output :
+<img width="1496" height="1072" alt="{B17647F9-DC08-43E3-8520-56DF760DEEA1}" src="https://github.com/user-attachments/assets/af8e55ee-3569-4d91-a38f-bd1469c37d47" />
+<img width="1484" height="1020" alt="{F1ED5D39-0A04-42C3-8B45-E5283E9F238B}" src="https://github.com/user-attachments/assets/9e9aa873-5ce0-495c-aef3-25110bf872f9" />
 
-import socket
-s=socket.socket()
-s.connect(('localhost',8000))
-print(s.getsockname())
-print(s.recv(1024).decode())
-s.send("acknowledgement recived from the server".encode())
 
-## Output:
-## Client
-<img width="1361" height="159" alt="Screenshot 2025-08-08 140213" src="https://github.com/user-attachments/assets/f5da7377-fa0d-4ba4-8732-ab982709a851" />
-
-## Server
-<img width="1376" height="168" alt="Screenshot 2025-08-08 140140" src="https://github.com/user-attachments/assets/96f71b9b-6829-4e77-b876-ce21338723ee" />
 
 
 ## Result:
